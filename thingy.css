@@ -1,0 +1,108 @@
+body{
+    background-color:#4363ff;
+    font-family:Comic Sans MS;
+    /*width:1062px;*/
+}
+
+canvas{
+    float:left;
+    border-style:solid;
+    border-width: 1px 4px 4px 1px;
+    border-color:black;
+    background-color:white;
+	display: inline-block;
+	cursor: crosshair;
+}
+
+img{
+    border-style:solid;
+}
+h1{
+    color:#ffb21b;
+    text-align:center;
+    font-size:300%;
+    margin:auto;
+}
+b{
+    color:#52ff43;
+}
+a{
+    color:orange;
+}
+a:hover{
+    color:yellow;
+}
+input{
+}
+button{
+    margin:auto;
+    width:360px;
+}
+.generator{
+    border-style:solid;
+    border-width:3px 3px 3px 3px;
+	position: relative;
+	top:0px;
+	left:0px;
+}
+.options{
+    width:380px;
+    border-style:solid;   
+    border-width:0px 0px 3px 0px;
+    padding:6px 10px 6px 10px;
+	display:block;
+}
+
+h3{
+	margin: auto;
+    text-align:center;
+}
+
+.trigger{
+	background-color: rgb(0,100,200);
+    width:380px;
+    border-style:solid;   
+    border-width:0px 0px 3px 0px;
+    padding:6px 10px 6px 10px;
+	cursor: default;
+	display: inline-block;
+}
+
+.trigger:hover{
+	background-color: rgb(0,150,200)
+}
+
+.tab{
+	background-color: rgb(0,100,200);
+    width:48%;
+    padding:6px 10px 6px 10px;
+	cursor: default;
+	display: inline-block;
+}
+
+.tab:hover{
+	background-color: rgb(0,150,200)
+}
+
+table,td{
+	border-style: solid;
+	border-width: 3px;
+	border-color: black;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+td{
+	vertical-align: top;
+}
+
+header{
+    border-style:solid;
+    border-width:3px 3px 3px 3px;
+    background-color:#2e39b2;
+	border-color: #7d5100;
+	width: 100%;
+}
+.group{
+	width:400px;
+}

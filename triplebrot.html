@@ -1,0 +1,58 @@
+<!doctype html>
+
+<head>
+    <link rel="stylesheet" href="thingy.css">
+    <link rel='icon' href='favicon^4.png' sizes='32x32'>
+    <title>Set Generator^4</title>
+</head>
+
+<body>
+    <h1>Mandelbrot Set Generator<b>^4</b></h1>
+    <div class='navbar'>
+        <p style='text-align:center;'>
+            <a href='index.html'>Mandelbrot Generator</a>|
+            <a href='doublebrot.html'>Mandelbrot Generator^3</a>|
+            <a href='triplebrot.html'>Mandelbrot Generator^4</a>|
+            <a href='instructions.html' target='_blank_'>How To Use</a>|
+            <a href='explanation.html' target='_blank_'>What Is It?</a>
+        </p>
+    </div>
+    <div class="generator" id='division'>
+        <canvas id="screen" width='640' height='640' onclick="changeCoords(event)">Error</canvas>
+		<div class='group' id='group'>
+			<div class='options'>
+				<p>Canvas Width(px): <input type='number' id='width' value=640 max=1200></p>
+				<p>Canvas Height(px): <input type='number' id='height' value=640 max=1200></p>
+				<button onclick='changeSize()'>Change Size</button>
+			</div>
+			<div class='options'>
+				<p>
+					Color Scheme: <select id='colorScheme'>
+						<option value='rainbow'>Rainbow</option>
+						<option value='rgb'>RGB</option>
+					</select>
+				</p>
+				<p>Color Difference: <input type='number' id='colorStep' value=25></p>
+				<p>Colour Brightness: <input type='number' id='brightness' value=200></p>
+				<p>Colour Begin: <input type='number' id='colorBegin' value=0></p>
+				<p>In Set Color: <input type='color' id='inSetColor' value='#000000'></p>
+				<button onclick='changeVisuals()'>Change Color Settings</button>
+			</div>
+			<div class='options' id='last'>
+				<p>X co-ordinate: <input type="number" id="xcor" value=0></p>
+				<p>Y co-ordinate: <input type="number" id="ycor" value=0></p>
+				<p>Zoom: <input type="number" id="zoom" value=1></p>
+				<p>
+					Change Zoom:
+					<input id='changeZoom' type='number' value=1 min=1 step=0.1><button onclick='changeZoom(0)' style='width:22px;'>&divide</button><button onclick='changeZoom(1)' style='width:22px;'>&times</button>
+				</p>
+				<p>Iterations: <input type='number' id='limit' value=600></p>
+				<button onclick="triplerun()">Generate</button>
+			</div>
+		</div>
+    </div>
+    <p>It is normal for this webpage to stop responding when run, especially with a large canvas or a high iterations value.</p>
+    <!--<p><a id='download' href='' download>Download as PNG</a></p>-->
+        <!--<p><a href='gif.html' target='_blank_'>Example Zoom</a></p>-->
+    <script src="mandelbrot.js"></script>
+</body>

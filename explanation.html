@@ -1,0 +1,36 @@
+<!doctype html>
+
+<head>
+    <link rel="stylesheet" href="thingy.css">
+    <link rel='icon' href='favicon.png' sizes='32x32'>
+    <title>What is it?</title>
+</head>
+
+<body>
+    <h1>What is the Mandelbrot Set?</h1>
+    <div class='navbar'>
+        <p style='text-align:center;'>
+            <a href='index.html'>Mandelbrot Generator</a>|
+            <a href='doublebrot.html'>Mandelbrot Generator^3</a>|
+            <a href='triplebrot.html'>Mandelbrot Generator^4</a>|
+            <a href='instructions.html'>How To Use</a>|
+            <a href='explanation.html'>What Is It?</a>
+        </p>
+    </div>
+    <p>
+        The Mandelbrot Set is A mathematical set of complex numbers, numbers that have a real component as well as an 'imaginary' component, which is a multiple of <i>i</i>, the square root of -1.<br>
+        These complex numbers can be represented as points on the 'complex plane', where the real numbers are on the x axis, and the imaginary numbers are on the y axis.<br>
+        <img src='plane.png'><br>
+        The mandelbrot set is located thus:<br>
+        <img src='planebrot.png'><br>
+        The points colored in black (or whatever color you choose) are inside the set, and the colored points are outside the set.<br>
+    </p>
+    <p>
+        But wait! How do you know which points are inside the set and which points aren't?<br>
+        Well, for a point/complex number to be in the set, it must pass this test:<br>
+        The number goes through an iterave process, repeated the amount of times you scecify in the iterations box.<br>
+        Each time, it is squared, and has the original number added.<br>
+        If, at any time during this process, the number becomes farther than 2 away from 0+0i, in other words, outside the colored circle, then it is not in the set, and is colored according to how many iterations it took to verify that it was outside the set.<br>
+        Otherwise, it is aproximated to be inside the set, and is colored black, or whatever color you chose.<br>
+    </p>
+</body>

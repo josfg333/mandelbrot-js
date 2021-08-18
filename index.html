@@ -40,6 +40,7 @@
 				<div class='trigger' onclick="show(1)"><h3>Color</h3></div>
 				<div class='options'>
 					<p>Relative Colouring: <input type='checkbox' id='relCol' onchange='colorState.changeVisuals()' checked></p>
+					<p>Exponent Mod: <input type='range' id='exponent' min=-200 max=200 onchange='colorState.changeVisuals()'></p>
 					<p>Colour Difference: <input type='number' id='colorStep' value=10 onchange='colorState.changeVisuals()'></p>
 					<p>Colour Begin: <input type='number' id='colorBegin' value=0 onchange='colorState.changeVisuals()'></p>
 					<p>In Set Color: <input type='color' id='inSetColor' value='#000000' onchange='colorState.changeVisuals()'></p>
@@ -53,6 +54,7 @@
 							<option value='greyscale'>Greyscale</option>
 							<option value='rainbow'>Rainbow</option>
 							<option value='rgb'>RGB</option>
+							<option value='pride'>Pride</option>
 							<option value='wrb'>White Red Black</option>
 							<option value='ocean'>Ocean</option>
 							<option value='larch'>Larch</option>

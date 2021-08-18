@@ -130,6 +130,15 @@ var color = {
 			400:[30,30,30],
 			599:[255,255,255]
 		},
+        pride: {
+            0: [255,24,0],
+            100: [255,165,44],
+            200: [255,255,65],
+            300: [0,128,24],
+            400: [0,0,249],
+            500: [134,0,125],
+            599: [255,24,0]
+        },
 		ocean: {
 			0:[0, 54, 208],
 			100:[0, 174, 255],
@@ -307,7 +316,10 @@ function draw(array=state.valList,drawState=state,context=state.context,start=-2
 			if(val==drawState.limit){
 				context.strokeStyle=inSetColor;
 			}else if(relCol){
-				context.strokeStyle=color.table[(((val-drawState.minVal)*colorStep+colorBegin)%num+num)%num];
+                newVal=val-drawState.minVal;
+                newVal=Math.floor(Math.log(newVal+1));
+                colorTableIndex=((newVal*colorStep+colorBegin)%num+num)%num;
+				context.strokeStyle=color.table[colorTableIndex];
 			}else{
 				context.strokeStyle=color.table[((val*colorStep+colorBegin)%num+num)%num];
 			}
@@ -331,7 +343,12 @@ function draw(array=state.valList,drawState=state,context=state.context,start=-2
 			if(val==drawState.limit){
 				context.strokeStyle=inSetColor;
 			}else if(relCol){
-				context.strokeStyle=color.table[(((val-drawState.minVal)*colorStep+colorBegin)%num+num)%num];
+				var newVal=val-drawState.minVal;
+                var range=drawState.limit-drawState.minVal;
+                var co=(newVal/range)**Math.exp(colorState.exponent/100)
+                newVal=Math.round(co*num);
+                colorTableIndex=((newVal*colorStep+colorBegin)%num+num)%num;
+				context.strokeStyle=color.table[colorTableIndex];
 			}else{
 				context.strokeStyle=color.table[((val*colorStep+colorBegin)%num+num)%num];
 			}
@@ -386,6 +403,7 @@ function animate(val=minVal){
 var colorState={
 	colorBegin: 0,
 	colorStep: 10,
+    exponent: 0,
 	inSetColor: "#000000",
 	pixNum: 500,
 	speedChange: function(){
@@ -402,6 +420,7 @@ var colorState={
 	changeVisuals: function(bypass=false){
 		this.colorBegin=input.value("colorBegin");
 		this.colorStep=input.value("colorStep");
+        this.exponent=input.value("exponent");
 		this.inSetColor=input.value("inSetColor");
 		this.relCol=document.getElementById("relCol").checked;
 		this.dir=Number(input.value("dir"));
@@ -611,26 +630,34 @@ function julia(x,y,m,n){
 }
 
 function inset(m,n){
-	var workingm=m;
-	var workingn=n;
-	var oldworkingm=m
-	var m2,n2;
+	var a=m;
+	var b=n;
+	var olda=m
+	var a2,b2;
 	for(h=0; h<mstate.limit-1; h++){
-		m2=workingm**2;
-		n2=workingn**2;
-		if(m2+n2>4){
-			return(h);
+		a2=a**2;
+		b2=b**2;
+        //console.log(a**2+b**2);
+		if(a2+b2>4){
+			return h;
 		}
-		workingm=(m2-n2)+m;
-		workingn=(2*oldworkingm*workingn)+n;
+		a=(a2-b2)+m;
+		b=(2*olda*b)+n;
+        /*den=(1+a2)**2+b2**2;
+        a=((a**3-3*a*(b**2))*(1+a2) + b2*(3*(a**2)*b-b**3))/den + m
+        b=((3*(olda**2)*b-b**3)*(1+a2) - b2*(olda**3-3*olda*(b**2)))/den + n*/
 		/*workingm=-1*(workingm**3-3*workingm*(workingn**2)-workingm**2+workingn**2+m);
             workingn=-1*(3*(workingm**2)*workingn-workingn**3-2*workingm*workingn+n);*/
-		oldworkingm=workingm;
+		olda=a;
 	}
-	if((workingm**2)+(workingn**2)>4){
+	
+	if((a*a)+(b*b)>4){
 		return(h);
 	}
 	return(mstate.limit);
+    //console.log(a**2+b**2);
+    /*if(a**2+b**2==0){return mstate.limit-1;}
+    return Math.floor(Math.abs(Math.log(a**2+b**2)))%mstate.limit;*/
 }
 
 /*function squared3([m,n]){

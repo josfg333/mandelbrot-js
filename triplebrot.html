@@ -8,51 +8,100 @@
 
 <body>
     <h1>Mandelbrot Set Generator<b>^4</b></h1>
-    <div class='navbar'>
+    <header class='navbar'>
         <p style='text-align:center;'>
             <a href='index.html'>Mandelbrot Generator</a>|
             <a href='doublebrot.html'>Mandelbrot Generator^3</a>|
             <a href='triplebrot.html'>Mandelbrot Generator^4</a>|
+			<a href="quaternion.html">Quaternion</a>|
             <a href='instructions.html' target='_blank_'>How To Use</a>|
             <a href='explanation.html' target='_blank_'>What Is It?</a>
         </p>
-    </div>
-    <div class="generator" id='division'>
-        <canvas id="screen" width='640' height='640' onclick="changeCoords(event)">Error</canvas>
-		<div class='group' id='group'>
-			<div class='options'>
-				<p>Canvas Width(px): <input type='number' id='width' value=640 max=1200></p>
-				<p>Canvas Height(px): <input type='number' id='height' value=640 max=1200></p>
-				<button onclick='changeSize()'>Change Size</button>
+    </header>
+    <table class="generator" id='division'>
+		<tr>
+			<td colspan=2>
+				<div class='tab' onclick="show(-1);"><h3>Mandelbrot</h3></div><div class='tab' onclick="show(-2);"><h3>Julia</h3></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<canvas id="screen" width='640' height='640' onclick="changeCoords(event)">Error</canvas>
+				<canvas id="jscreen" width='640' height='640' onclick="changeCoords(event)" style="display: none;">Error</canvas>
+			</td>
+			<td>
+			<div class='group' id='group'>
+				<div class='trigger' onclick="show(0)"><h3>Size</h3></div>
+				<div class='options'>
+					<p>Canvas Width(px): <input type='number' id='width' value=640 max=1200></p>
+					<p>Canvas Height(px): <input type='number' id='height' value=640 max=1200></p>
+					<button onclick='changeSize()'>Change Size</button>
+				</div>
+				<div class='trigger' onclick="show(1)"><h3>Color</h3></div>
+				<div class='options'>
+					<p>Relative Colouring: <input type='checkbox' id='relCol' onchange='colorState.changeVisuals()' checked></p>
+					<p>Exponent Mod: <input type='range' id='exponent' min=-200 max=200 onchange='colorState.changeVisuals()'></p>
+					<p>Colour Difference: <input type='number' id='colorStep' value=10 onchange='colorState.changeVisuals()'></p>
+					<p>Colour Begin: <input type='number' id='colorBegin' value=0 onchange='colorState.changeVisuals()'></p>
+					<p>In Set Color: <input type='color' id='inSetColor' value='#000000' onchange='colorState.changeVisuals()'></p>
+					<p>
+						Interpolation: <select id='gradType' onchange='updateGrad("none")'>
+							<option value='linear'>Linear</option>
+							<option value='cubic'>Cubic</option>
+						</select>
+						Presets: <select id='presets' onchange='updateGrad("presets")'>
+							<option value='none'>None</option>
+							<option value='greyscale'>Greyscale</option>
+							<option value='rainbow'>Rainbow</option>
+							<option value='rgb'>RGB</option>
+							<option value='pride'>Pride</option>
+							<option value='wrb'>White Red Black</option>
+							<option value='ocean'>Ocean</option>
+							<option value='larch'>Larch</option>
+						</select>
+					</p>
+					<p>
+						Point: <input type='number' id='pointNum' value=0 style="width: 30px;" onchange="updateGrad('change')">
+						Position: <input type='number' id='pointPos' width='50' style="width: 50px;" onchange='updateGrad("changeSlider")'>
+						Color:<input type='color' id='pointColor' style="width: 30px;" onchange='updateGrad("changeCol")'>
+						<button onclick="updateGrad('delete')" style="width: auto;">Delete</button>
+					</p>
+					<p>
+						<canvas width=300 height='14' id='gradView' style="border-width:1px;" onclick="updateGrad('click',event)" onmousemove="displayNum(event)"></canvas>
+						<input type='number' id='gradSize' value=600 style="width: 50px;" onchange="updateGrad('resize')">
+					</p>
+					<p><input type='range' id='slider' style='width:300px;' min=0 max=599 onchange='updateGrad("changePos")'></p>
+					<p>
+						Draw Speed: <input type='range' id='speed' onchange='colorState.speedChange()' style="width: 300px;" min=1 max=1000 value=500>
+						<select id='dir' onclick="colorState.changeVisuals()">
+							<option value=1>In</option>
+							<option value=-1>Out</option>
+						</select>
+					</p>
+					<p>Auto Change: <input type='checkbox' checked id="autoChange"></p>
+					<button onclick="colorState.changeVisuals(true)">Change Visuals</button>
+				</div>
+				<div class='trigger' onclick="show(2)"><h3>Parameters</h3></div>
+				<div class='options'>
+					<p>X co-ordinate: <input type="number" id="xcor" value=0></p>
+					<p>Y co-ordinate: <input type="number" id="ycor" value=0></p>
+					<p>Zoom: <input type="number" id="zoom" value=1></p>
+					<p>
+						Change Zoom:
+						<input id='changeZoom' type='number' value=10 min=1 step=0.1><button onclick='changeZoom(0)' style='width:22px;'>&divide</button><button onclick='changeZoom(1)' style='width:22px;'>&times</button>
+					</p>
+					<p>Iterations: <input type='number' id='limit' value=600></p>
+				</div>
+				<div class='options' id='last'>
+					<button onclick="disable(true);setTimeout(run,0, 3)" id='run'>Generate</button>
+					<button onclick="disable(true);setTimeout(jrun,0, 3)" id='jrun'>Julia</button>
+				</div>
 			</div>
-			<div class='options'>
-				<p>
-					Color Scheme: <select id='colorScheme'>
-						<option value='rainbow'>Rainbow</option>
-						<option value='rgb'>RGB</option>
-					</select>
-				</p>
-				<p>Color Difference: <input type='number' id='colorStep' value=25></p>
-				<p>Colour Brightness: <input type='number' id='brightness' value=200></p>
-				<p>Colour Begin: <input type='number' id='colorBegin' value=0></p>
-				<p>In Set Color: <input type='color' id='inSetColor' value='#000000'></p>
-				<button onclick='changeVisuals()'>Change Color Settings</button>
-			</div>
-			<div class='options' id='last'>
-				<p>X co-ordinate: <input type="number" id="xcor" value=0></p>
-				<p>Y co-ordinate: <input type="number" id="ycor" value=0></p>
-				<p>Zoom: <input type="number" id="zoom" value=1></p>
-				<p>
-					Change Zoom:
-					<input id='changeZoom' type='number' value=1 min=1 step=0.1><button onclick='changeZoom(0)' style='width:22px;'>&divide</button><button onclick='changeZoom(1)' style='width:22px;'>&times</button>
-				</p>
-				<p>Iterations: <input type='number' id='limit' value=600></p>
-				<button onclick="triplerun()">Generate</button>
-			</div>
-		</div>
-    </div>
+			</td>
+		</tr>
+    </table>
     <p>It is normal for this webpage to stop responding when run, especially with a large canvas or a high iterations value.</p>
-    <!--<p><a id='download' href='' download>Download as PNG</a></p>-->
+    <!--<p><a id='download' href='' target='_blank_'>Download as PNG</a></p>-->
         <!--<p><a href='gif.html' target='_blank_'>Example Zoom</a></p>-->
-    <script src="mandelbrot.js"></script>
+	<script src="mandelbrot.js"></script>
 </body>

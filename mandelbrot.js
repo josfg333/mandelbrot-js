@@ -16,6 +16,8 @@ var mstate={
 	name: 'm',
 	xcor: 0,
 	ycor: 0,
+	jcor: 0,
+	kcor: 0,
 	zoom: 1,
 	limit: 600,
 	minVal: 0,
@@ -31,6 +33,8 @@ var jstate={
 	name: 'j',
 	xcor: 0,
 	ycor: 0,
+	jcor: 0,
+	kcor: 0,
 	zoom: 1,
 	limit: 600,
 	minVal: 0,
@@ -223,6 +227,8 @@ function changeSize(){
 function details(){
 	input.set("xcor",state.clickX);
 	input.set("ycor",state.clickY);
+	input.set("jcor",state.jcor);
+	input.set("kcor",state.kcor);
 	input.set("zoom",state.zoom);
 	input.set("limit",state.limit);
 	input.set("width",state.width);
@@ -623,10 +629,79 @@ function julia(x,y,m,n){
             workingn=-1*(3*(workingm**2)*workingn-workingn**3-2*workingm*workingn+n);*/
 		oldworkingm=workingm;
 	}
-	if((workingm**2)+(workingn**2)>4){
+	if((workingm*workingm)+(workingn*workingn)>4){
 		return(h);
 	}
 	return(jstate.limit);
+}
+
+function doublejulia(x,y,m,n){
+	var workingm=m;
+	var workingn=n;
+	//var oldworkingm=m;
+	var m2,n2;
+	for(h=0; h<jstate.limit-1; h++){
+		m2=workingm*workingm;
+		n2=workingn*workingn;
+		if(m2+n2>4){
+			return(h);
+		}
+		workingm=(m2*workingm - 3*workingm*n2)+x;
+		workingn=(3*m2*workingn - workingn*n2)+y;
+		//oldworkingm=workingm;
+	}
+	if((workingm*workingm)+(workingn*workingn)>4){
+		return(h);
+	}
+	return(jstate.limit);
+}
+
+function triplejulia(x,y,m,n){
+	var workingm=m;
+	var workingn=n;
+	var oldworkingm=m
+	var m2,n2;
+	for(h=0; h<jstate.limit-1; h++){
+		m2=workingm*workingm;
+		n2=workingn*workingn;
+		if(m2+n2>4){
+			return(h);
+		}
+		workingm = m2*m2 - 6*m2*n2 + n2*n2 + x;
+		workingn = 4*(m2*oldworkingm*workingn - oldworkingm*n2*workingn) + y;
+		oldworkingm=workingm;
+	}
+	if((workingm*workingm)+(workingn*workingn)>4){
+		return(h);
+	}
+	return(jstate.limit);
+}
+
+function qjulia(m,n, j, k, a, b, c, d){
+	var workingm=a;
+	var workingn=b;
+	var workingj=c;
+	var workingk=d;
+	var oldworkingm=a;
+	for(h=0; h<mstate.limit; h++){
+		a2 = workingm*workingm;
+		b2 = workingn*workingn;
+		c2 = workingj*workingj;
+		d2 = workingk*workingk;
+		if(a2+b2+c2+d2>4){
+			return(h);
+		}
+		workingm=a2-b2-c2-d2+m;
+		workingn=(2*oldworkingm*workingn)+n;
+		workingj=(2*oldworkingm*workingj)+j;
+		workingk=(2*oldworkingm*workingk)+k;
+		oldworkingm=workingm;
+	}
+
+	if((workingm*workingm)+(workingn*workingn)+(workingj*workingj)+(workingk*workingk)>4){
+		return(h);
+	}
+	return(mstate.limit);
 }
 
 function inset(m,n){
@@ -635,8 +710,8 @@ function inset(m,n){
 	var olda=m
 	var a2,b2;
 	for(h=0; h<mstate.limit-1; h++){
-		a2=a**2;
-		b2=b**2;
+		a2=a*a;
+		b2=b*b;
         //console.log(a**2+b**2);
 		if(a2+b2>4){
 			return h;
@@ -658,6 +733,78 @@ function inset(m,n){
     //console.log(a**2+b**2);
     /*if(a**2+b**2==0){return mstate.limit-1;}
     return Math.floor(Math.abs(Math.log(a**2+b**2)))%mstate.limit;*/
+};
+
+function doubleinset(m,n){
+	var a=m;
+	var b=n;
+	//var olda=m
+	var a2,b2;
+	for(h=0; h<mstate.limit-1; h++){
+		a2=a*a;
+		b2=b*b;
+		if(a2+b2>4){
+			return h;
+		}
+		a = a2*a - 3*a*b2 + m;
+		b = 3*a2*b - b*b2 + n;
+		//olda=a;
+	}
+
+	if((a*a)+(b*b)>4){
+		return(h);
+	}
+	return(mstate.limit);
+};
+
+
+function tripleinset(m,n){
+	var a=m;
+	var b=n;
+	var olda=m
+	var a2,b2;
+	for(h=0; h<mstate.limit-1; h++){
+		a2=a*a;
+		b2=b*b;
+		if(a2+b2>4){
+			return h;
+		}
+		a = a2*a2 - 6*a2*b2 + b2*b2 + m;
+		b = 4*(a2*olda*b - olda*b2*b) + n;
+		olda=a;
+	}
+
+	if((a*a)+(b*b)>4){
+		return(h);
+	}
+	return(mstate.limit);
+};
+
+function qinset(m,n, j, k){
+	var workingm=0;
+	var workingn=0;
+	var workingj=0;
+	var workingk=0;
+	var oldworkingm=0;
+	for(h=0; h<mstate.limit; h++){
+		a2 = workingm*workingm;
+		b2 = workingn*workingn;
+		c2 = workingj*workingj;
+		d2 = workingk*workingk;
+		if(a2+b2+c2+d2>4){
+			return(h);
+		}
+		workingm=a2-b2-c2-d2+m;
+		workingn=(2*oldworkingm*workingn)+n;
+		workingj=(2*oldworkingm*workingj)+j;
+		workingk=(2*oldworkingm*workingk)+k;
+		oldworkingm=workingm;
+	}
+
+	if((workingm*workingm)+(workingn*workingn)+(workingj*workingj)+(workingk*workingk)>4){
+		return(h);
+	}
+	return(mstate.limit);
 }
 
 /*function squared3([m,n]){
@@ -701,9 +848,11 @@ function newton(m,n){
 	}
 }*/
 
-function run(){
+function run(type){
 	mstate.xcor=Number(document.getElementById("xcor").value);
 	mstate.ycor=Number(document.getElementById("ycor").value);
+	mstate.jcor=Number(document.getElementById("jcor").value);
+	mstate.kcor=Number(document.getElementById("kcor").value);
 	mstate.zoom=Number(document.getElementById("zoom").value);
 	mstate.limit=Number(document.getElementById("limit").value);
 	mstate.clickX=mstate.xcor;
@@ -723,15 +872,56 @@ function run(){
 	}else{
 		var rad=height/2;
 	}
-    for(x=0; x<width; x++){
-        for(y=0; y<height; y++){
-            a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
-            b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
-            value=inset(a,b);
-			if(value<mstate.minVal){mstate.minVal=value;}
-            mstate.valList[value].push([x,y]);
-        }
-    }
+	switch (type) {
+		case 1:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
+					b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
+					value=inset(a,b);
+					if(value<mstate.minVal){mstate.minVal=value;}
+					mstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case 2:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
+					b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
+					value=doubleinset(a,b);
+					if(value<mstate.minVal){mstate.minVal=value;}
+					mstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case 3:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
+					b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
+					value=tripleinset(a,b);
+					if(value<mstate.minVal){mstate.minVal=value;}
+					mstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case -1:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
+					b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
+					value=qinset(a,b, mstate.jcor, mstate.kcor);
+					if(value<mstate.minVal){mstate.minVal=value;}
+					mstate.valList[value].push([x,y]);
+				}
+			}
+		default:
+			break;
+	}
     //console.log('done list');
 	
     draw(mstate.valList,mstate,scr);
@@ -742,10 +932,12 @@ function run(){
     //console.log("done");
 }
 
-function jrun(){
+function jrun(type){
 	if(state.name=='j'){
 		jstate.xcor=Number(document.getElementById("xcor").value);
 		jstate.ycor=Number(document.getElementById("ycor").value);
+		jstate.jcor=Number(document.getElementById("jcor").value);
+		jstate.kcor=Number(document.getElementById("kcor").value);
 		jstate.zoom=Number(document.getElementById("zoom").value);
 		jstate.limit=Number(document.getElementById("limit").value);
 	}
@@ -764,77 +956,66 @@ function jrun(){
 	}else{
 		var rad=height/2;
 	}
-    for(x=0; x<width; x++){
-        for(y=0; y<height; y++){
-            a=((2*x-width))/(jstate.zoom*rad)+jstate.xcor;
-            b=((height-2*y))/(jstate.zoom*rad)+jstate.ycor;
-            value=julia(mstate.clickX,mstate.clickY,a,b);
-			if(value<jstate.minVal){jstate.minVal=value;}
-            jstate.valList[value].push([x,y]);
-        }
-    }
-	console.log(x,y);
+	switch (type) {
+		case 1:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(jstate.zoom*rad)+jstate.xcor;
+					b=((height-2*y))/(jstate.zoom*rad)+jstate.ycor;
+					value=julia(mstate.clickX,mstate.clickY,a,b);
+					if(value<jstate.minVal){jstate.minVal=value;}
+					jstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case 2:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(jstate.zoom*rad)+jstate.xcor;
+					b=((height-2*y))/(jstate.zoom*rad)+jstate.ycor;
+					value=doublejulia(mstate.clickX,mstate.clickY,a,b);
+					if(value<jstate.minVal){jstate.minVal=value;}
+					jstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case 3:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(jstate.zoom*rad)+jstate.xcor;
+					b=((height-2*y))/(jstate.zoom*rad)+jstate.ycor;
+					value=triplejulia(mstate.clickX,mstate.clickY,a,b);
+					if(value<jstate.minVal){jstate.minVal=value;}
+					jstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		case -1:
+			for(x=0; x<width; x++){
+				for(y=0; y<height; y++){
+					a=((2*x-width))/(jstate.zoom*rad)+jstate.xcor;
+					b=((height-2*y))/(jstate.zoom*rad)+jstate.ycor;
+					value=qjulia(mstate.clickX,mstate.clickY, mstate.jcor, mstate.kcor,a,b, jstate.jcor, jstate.kcor);
+					if(value<jstate.minVal){jstate.minVal=value;}
+					jstate.valList[value].push([x,y]);
+				}
+			}
+			break;
+
+		default:
+			break;
+	}
+	//console.log(x,y);
     //console.log('done list');
 	
     draw(jstate.valList,jstate,jscr);
 	disable(false);
 }
 
-function qrun(){
-	xcor=Number(document.getElementById("xcor").value);
-    ycor=Number(document.getElementById("ycor").value);
-	jcor=Number(document.getElementById("jcor").value);
-	kcor=Number(document.getElementById("kcor").value);
-    zoom=Number(document.getElementById("zoom").value);
-    limit=Number(document.getElementById("limit").value);
-    
-    function qinset(m,n){
-        var workingm=0;
-        var workingn=0;
-		var workingj=0;
-		var workingk=0;
-        var oldworkingm=0;
-        for(h=0; h<limit; h++){
-            workingm=(workingm**2)-(workingn**2)-(workingj**2)-(workingk**2)+m;
-            workingn=(2*oldworkingm*workingn)+n;
-			workingj=(2*oldworkingm*workingj)+jcor;
-			workingk=(2*oldworkingm*workingk)+kcor;
-            oldworkingm=workingm;
-            if((workingm**2)+(workingn**2)+(workingj**2)+(workingk**2)>4){
-                return(h);
-            }
-        }
-        return(h);
-    }
-	var width=mstate.width;
-	var height=mstate.height;
-	if(width<height){
-		var rad=width/2;
-	}else{
-		var rad=height/2;
-	}
-	
-    //console.log("start");
-	for(var i=0; i<mstate.limit+1; i++){
-		mstate.valList[i]=[];
-	}
-    for(x=0; x<width; x++){
-        for(y=0; y<height; y++){
-            a=((2*x-width))/(mstate.zoom*rad)+mstate.xcor;
-            b=((height-2*y))/(mstate.zoom*rad)+mstate.ycor;
-            value=qinset(a,b);
-			if(value<mstate.minVal){mstate.minVal=value;}
-            mstate.valList[value].push([x,y]);
-        }
-    }
-    //console.log('done list');
-    draw(mstate.valList,mstate,scr);
-	disable(false);
-    /*var png=scree.toDataURL('image/png');
-    console.log(png);
-    document.getElementById('download').href=png;*/
-    //console.log("done");
-}
+
 
 changeSize();
 show(1);

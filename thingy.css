@@ -14,6 +14,10 @@ canvas{
 	cursor: crosshair;
 }
 
+#screen, #jscreen{
+    border-width: 0 0 3px 0;
+}
+
 img{
     border-style:solid;
 }
@@ -40,13 +44,13 @@ button{
 }
 .generator{
     border-style:solid;
-    border-width:3px 3px 3px 3px;
+    border-width:3px 0px 3px 3px;
 	position: relative;
 	top:0px;
 	left:0px;
 }
 .options{
-    width:380px;
+    min-width:400px;
     border-style:solid;   
     border-width:0px 0px 3px 0px;
     padding:6px 10px 6px 10px;
@@ -60,7 +64,7 @@ h3{
 
 .trigger{
 	background-color: rgb(0,100,200);
-    width:380px;
+    min-width:400px;
     border-style:solid;   
     border-width:0px 0px 3px 0px;
     padding:6px 10px 6px 10px;
@@ -104,5 +108,9 @@ header{
 	width: 100%;
 }
 .group{
-	width:400px;
+	width:420px;
+}
+
+#last{
+    border-bottom-width: 0;
 }

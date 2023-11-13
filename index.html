@@ -82,7 +82,7 @@
 					<button onclick="colorState.changeVisuals(true)">Change Visuals</button>
 				</div>
 				<div class='trigger' onclick="show(2)"><h3>Parameters</h3></div>
-				<div class='options' id='last'>
+				<div class='options'>
 					<p>X co-ordinate: <input type="number" id="xcor" value=0></p>
 					<p>Y co-ordinate: <input type="number" id="ycor" value=0></p>
 					<p>Zoom: <input type="number" id="zoom" value=1></p>
@@ -93,8 +93,8 @@
 					<p>Iterations: <input type='number' id='limit' value=600></p>
 				</div>
 				<div class='options' id='last'>
-					<button onclick="disable(true);setTimeout(run,0)" id='run'>Generate</button>
-					<button onclick="disable(true);setTimeout(jrun,0)" id='jrun'>Julia</button>
+					<button onclick="disable(true);setTimeout(run,0, 1)" id='run'>Generate</button>
+					<button onclick="disable(true);setTimeout(jrun,0, 1)" id='jrun'>Julia</button>
 				</div>
 			</div>
 			</td>

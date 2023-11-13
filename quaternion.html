@@ -40,6 +40,7 @@
 				<div class='trigger' onclick="show(1)"><h3>Color</h3></div>
 				<div class='options'>
 					<p>Relative Colouring: <input type='checkbox' id='relCol' onchange='colorState.changeVisuals()' checked></p>
+					<p>Exponent Mod: <input type='range' id='exponent' min=-200 max=200 onchange='colorState.changeVisuals()'></p>
 					<p>Colour Difference: <input type='number' id='colorStep' value=10 onchange='colorState.changeVisuals()'></p>
 					<p>Colour Begin: <input type='number' id='colorBegin' value=0 onchange='colorState.changeVisuals()'></p>
 					<p>In Set Color: <input type='color' id='inSetColor' value='#000000' onchange='colorState.changeVisuals()'></p>
@@ -53,6 +54,7 @@
 							<option value='greyscale'>Greyscale</option>
 							<option value='rainbow'>Rainbow</option>
 							<option value='rgb'>RGB</option>
+							<option value='pride'>Pride</option>
 							<option value='wrb'>White Red Black</option>
 							<option value='ocean'>Ocean</option>
 							<option value='larch'>Larch</option>
@@ -80,7 +82,7 @@
 					<button onclick="colorState.changeVisuals(true)">Change Visuals</button>
 				</div>
 				<div class='trigger' onclick="show(2)"><h3>Parameters</h3></div>
-				<div class='options' id='last'>
+				<div class='options'>
 					<p>J co-ordinate: <input type="number" id="jcor" value=0></p>
 					<p>K co-ordinate: <input type="number" id="kcor" value=0></p>
 					<br>
@@ -89,13 +91,13 @@
 					<p>Zoom: <input type="number" id="zoom" value=1></p>
 					<p>
 						Change Zoom:
-						<input id='changeZoom' type='number' value=1 min=1 step=0.1><button onclick='changeZoom(0)' style='width:22px;'>&divide</button><button onclick='changeZoom(1)' style='width:22px;'>&times</button>
+						<input id='changeZoom' type='number' value=10 min=1 step=0.1><button onclick='changeZoom(0)' style='width:22px;'>&divide</button><button onclick='changeZoom(1)' style='width:22px;'>&times</button>
 					</p>
 					<p>Iterations: <input type='number' id='limit' value=600></p>
 				</div>
 				<div class='options' id='last'>
-					<button onclick="disable(true);setTimeout(qrun,0)" id='run'>Generate</button>
-					<button onclick="disable(true);setTimeout(jrun,0)" id='jrun'>Julia</button>
+					<button onclick="disable(true);setTimeout(run,0, -1)" id='run'>Generate</button>
+					<button onclick="disable(true);setTimeout(jrun,0, -1)" id='jrun'>Julia</button>
 				</div>
 			</div>
 			</td>
